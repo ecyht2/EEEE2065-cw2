@@ -18,7 +18,7 @@ This report discusses the solution I arrived in when designing a number guessing
 #+caption: Example of an Algorithm game
 #+attr_latex: scale=0.75
 #+label: fig:algorithm-Game
-[[./media/game.png]]
+[[./media/algorithm.png]]
 
 * Methodology
 There are three main classes made for the purpose of this program. The first one is the [[Game Class][NumberGuessingGame]] which is the class that handles the entire number guessing game. The second one is the [[AI][AutoNumberGuesser]] class which is the class that plays the game autonomously. The last one is the [[Histogram][Histogram]] which is the class that draws the histogram.
