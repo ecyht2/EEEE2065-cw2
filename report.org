@@ -1,0 +1,124 @@
+#+title: EEEE2065 - Coursework 2 Report
+#+author: Tan Hong Kai - 20386501
+#+email: ecyht2@nottingham.edu.my
+#+INCLUDE: "title_page.org"
+#+OPTIONS: toc:nil
+#+LATEX_HEADER: \setlength\parindent{0pt}
+
+#+begin_comment
+Clearing TOC Page
+#+end_comment
+
+#+begin_export latex
+  \clearpage \tableofcontents \clearpage
+#+end_export
+
+* Introduction
+This report discusses the solution I arrived in when designing a number guessing game written in C++. This software includes a user played version in which the user is prompted to guess the number and an algorithm played version. In the user prompted version the game will tell the user if the guess is too high or too low after each guess. In the algorithm version, the user can specify how many times the algorithm is going to play the game and a histogram of the frequency of the number of guesses the algorithm took is shown. The mean, variance and standard deviation is calculated and displayed as well. The user will be prompted of the maximum number to generate from 1 to N.
+#+caption: Example of an Algorithm game
+#+attr_latex: scale=0.75
+#+label: fig:algorithm-Game
+[[./media/game.png]]
+
+* Methodology
+There are three main classes made for the purpose of this program. The first one is the [[Game Class][NumberGuessingGame]] which is the class that handles the entire number guessing game. The second one is the [[AI][AutoNumberGuesser]] class which is the class that plays the game autonomously. The last one is the [[Histogram][Histogram]] which is the class that draws the histogram.
+** Game Class
+There are 11 public functions for the src_C++[:exports code]{NumberGuessingGame} class. The constructor of this class takes in 2 integers as the parameters. The first one is the minimum number the game can generate, and the second one is the maximum number the game can generate. The defaults of the minimum are 0 and the maximum is 10.
+
+There are two main functions to interact with the game. The first one is src_C++[:exports code]{int makeGuess(int guess)}. The guess parameter is the number that the user is guess. If the guess is too high, an integer of 1 will be returned. If the guess is too low, an integer of -1 will be returned. Else if the guess is correct, the integer 0 is returned. The second function is src_C++[:exports code]{virtual bool getGuess(void)}. This function will get the guess from the standard input. A boolean value false would be returned if the guess is incorrect and true if the guess is correct. With each guess, the function will print if the number is too high or low in the standard output using the src_C++[:exports code]{virtual void handleGuess(int result)} function.
+
+The rest of the public functions are setters and getters function. There are three main ranges setters functions. src_C++[:exports code]{void setRange(int min, int max)}, src_C++[:exports code]{void setMin(int min)} and src_C++[:exports code]{void setMax(int max)} and its respective function sets the minimum and maximum the generated number can be in, the minimum the generated number can be and the maximum the generated number can be respectively. The function will throw an invalid_argument exception if the resultant range having the minimum number less than or equal to the maximum number. The getters just returns the respective value while the src_C++[:exports code]{std::string getRange(void) const} returns a string encoded in the format "minimum-maximum" where minimum is the minimum number and maximum is the maximum number.
+
+The src_C++[:exports code]{int getNGuesses(void) const} returns the number of guess made currently. There isn't any setter function as the number of guess is incremented internally and reset internally.
+
+The src_C++[:exports code]{void resetNumber(void)} function resets the current number the class has selected. It also resets the guess count. The number is generated using a uniform distribution with the minimum and maximum number specified in the constructor or the setter functions. The function uses the random standard library header which provides a src_C++[:exports code]{std::uniform_int_distribution} class which generates a random number with a uniform distribution. The default random engine specified by the implementation of the library is used with the current time as the seed, so the number generated will be random after each run.
+
+#+begin_comment
+#+caption: Declaration of NumberGuessingGame
+#+attr_latex: scale=0.75
+#+label: fig:NumberGuessingGame
+#+begin_src C++
+class NumberGuessingGame {
+        public:
+                NumberGuessingGame(int min = 0, int max = 10);
+                int makeGuess(int guess);
+                virtual bool getGuess(void);
+                // Setter
+                virtual void resetNumber(void);
+                void setRange(int min, int max);
+                void setMin(int min);
+                void setMax(int max);
+                // Getter
+                std::string getRange(void) const;
+                int getMin(void) const;
+                int getMax(void) const;
+                int getNGuesses(void) const;
+        protected:
+                virtual void handleGuess(int result) const;
+                void resetNGuesses(void);
+                int getNumber(void) const;
+        private:
+                int number = 0; /**<The current number. */
+                int min = 0; /**<The current minimum number. */
+                int max = 10; /**<The current maximum number. */
+                int guesses = 0; /**<The number of guesses made. */
+};
+#+end_src
+#+end_comment
+
+** Algorithm
+The src_C++[:exports code]{AutoNumberGuesser} class is a subclass of the [[Game Class][NumberGuessingGame]] class. The constructor class of the src_C++[:exports code]{AutoNumberGuesser} class is the same as the one at the src_C++[:exports code]{NumberGuessingGame} class. It added 2 new public function and 1 new protected function.
+
+The first public function is the src_C++[:exports code]{virtual int start(bool verbose = false)}. This function starts the number guessing algorithm to play the number guessing game in an optimal way. The algorithm works by guessing the number at the midpoint of the minimum and maximum number. If the number is too big, we set the minimum number to be the current guess. If the number is too small, we set the maximum number to the current guess. The algorithm then continues using the midpoint as the new guess with the new minimum or maximum until the correct number is guessed. This algorithm effectively divides the possible number by half with each guess making the maximum number of guesses $log_2(maximum - minimum + 1)$. This function returns the number of guesses it took for the algorithm to correctly guess the number while the src_C++[:exports code]{verbose} parameter if set to true prints out what the algorithm is guessing.
+
+The other public function src_C++[:exports code]{virtual int startRecursion(bool verbose = false)} paired with the protected src_C++[:exports code]{virtual void startRecursion(int cMin, int cMax, bool verbose = false)} are functions that perform the same algorithm but using function recursion instead of loops. The parameters and returns are the same as src_C++[:exports code]{virtual int start(bool verbose = false)}. The protected src_C++[:exports code]{int startRecursion()} also has two new parameters. They are src_C++[:exports code]{cMin} and src_C++[:exports code]{cMax} where cMin is the minimum and cMax is the maximum used to calculating the midpoint.
+
+The src_C++[:exports code]{AutoNumberGuesser} also re-implement the src_C++[:exports code]{virtual void handleGuess(int result) const} function to customize the printing when src_C++[:exports code]{verbose} is set to true in both src_C++[:exports code]{start()} and src_C++[:exports code]{startRecursion()} method is called.
+
+#+begin_comment
+#+caption: Declaration of AutoNumberGuesser
+#+attr_latex: scale=0.75
+#+label: fig:AutoNumberGuesser
+#+begin_src C++
+class AutoNumberGuesser: public NumberGuessingGame {
+        public:
+                AutoNumberGuesser(int min = 0, int max = 10);
+                virtual int start(bool verbose = false);
+                virtual int startRecursion(bool verbose = false);
+        protected:
+                virtual void startRecursion(int cMin, int cMax, bool verbose = false);
+                virtual void handleGuess(int result) const override;
+};
+#+end_src
+#+end_comment
+** Histogram
+The src_C++[:exports code]{Histogram} class is a class that prints a histogram. It uses templates src_C++[:exports code]{template <class T>}. It can be constructed using a src_C++[:exports code]{std::list<T>} or src_C++[:exports code]{std::map<T, int>}. The src_C++[:exports code]{std::list<T>} is a list of the data for the histogram and the other are a map where the key is the entry and the value is the amount of time the entry appeared.
+
+The data can also be stored using the src_C++[:exports code]{void setData()} method. This method is overloaded to take either src_C++[:exports code]{std::list<T>} and src_C++[:exports code]{std::map<T, int>}. The parameter represents the same thing as the ones in the constructor.
+
+There are 3 main public getter functions. src_C++[:exports code]{std::map<T, int> getData(void) const}, src_C++[:exports code]{std::pair<T, int> getHighest(void) const} and src_C++[:exports code]{std::pair<T, int> getLowest(void) const}. The src_C++[:exports code]{getData()} method returns a map with the key as the entry and the count of the entry as the value. src_C++[:exports code]{std::pair<T, int> getHighest(void) const} and src_C++[:exports code]{std::pair<T, int> getLowest(void) const} returns a src_C++[:exports code]{std::pair<T, int>} of the entry with the highest count and lowest count respectively where the first value is entry and the second value is the count.
+
+The last public function is src_C++[:exports code]{virtual void print(HistogramFlags flag) const} prints the histogram according to the src_C++[:exports code]{flag}. The src_C++[:exports code]{HistogramFlags} is an enumeration of the flag which include src_C++[:exports code]{HistogramFlags::VERTICAL} and src_C++[:exports code]{HistogramFlags::HORIZONTAL} which prints a vertical and horizontal histogram respectively.
+* Results
+#+caption: A player played game
+#+attr_latex: scale=0.75
+#+label: fig:player-game
+[[./media/player.png]]
+#+caption: Algorithm played game
+#+attr_latex: scale=0.75
+#+label: fig:algorithm-game
+[[./media/algorithm.png]]
+** Algorithm Benchmark
+The algorithm is benchmarked with the minimum fixed at 1 and the maximum increasing. The mean and standard deviation is stored and plotted. The number of iteration/sample is fixed as 500.
+#+caption: Mean
+#+attr_latex: scale=0.75
+#+label: fig:mean
+[[./media/mean.png]]
+#+caption: Standard Deviation
+#+attr_latex: scale=0.75
+#+label: fig:std
+[[./media/std.png]]
+
+The mean graph followed a logarithmic graph. This is consistent with the equation stated at [[Algorithm]]. However, the value of the mean is lower than the one calculated in $log_2(maximum - minimum + 1)$ as the number of guesses it took the algorithm could be less since the calculation is calculating the maximum.
+
+The standard deviation stays relatively constant of between 1.2 and 1.8. This is due to the fact that each new guess halves the amount of possible guesses. The number of guesses surrounding the mean and the mean accounts for most of the possible numbers that can be chosen by the game.
