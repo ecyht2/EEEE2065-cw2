@@ -61,6 +61,7 @@ int main(int argc, char *argv[]) {
     // Looping over all ranges
     for (int i = min; i <= max; i+=step) {
         guesser.setMax(i);
+        guesser.resetNumber();
         // Sampling all the data
         for (int j = 0; j < iteration; j++) {
             data.push_back(guesser.start());
