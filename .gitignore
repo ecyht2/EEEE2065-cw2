@@ -33,6 +33,9 @@ tmp/
 
 # Executables
 *.exe
+
+# Doxygen
+docs/
 *.out
 *.app
 bin/
