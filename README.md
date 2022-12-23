@@ -47,4 +47,4 @@ However these are optional and defaults to certain values.
 
 ## Documentation
 
-Documentation of the coursework can be found in the project [GitHub pages](https://ecyht2.github.io/EEEE2065-cw3/).
+Documentation of the coursework can be found in the project [GitHub pages](https://ecyht2.github.io/EEEE2065-cw2/).
