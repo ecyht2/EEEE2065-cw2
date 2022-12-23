@@ -45,4 +45,6 @@ However these are optional and defaults to certain values.
 | step      | How much should the program increase the N by after each iteration until it reaches max. | 100     |
 | iteration | How many samples should the benchmark take for a given N.                                | 500     |
 
+## Documentation
 
+Documentation of the coursework can be found in the project [GitHub pages](https://ecyht2.github.io/EEEE2065-cw3/).
