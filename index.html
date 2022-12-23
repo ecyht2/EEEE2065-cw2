@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Course Work 2: Main Page</title>
+<title>Course Work 2: EEEE2065-cw2</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,11 +62,49 @@ $(function() {
 </iframe>
 </div>
 
-<div class="header">
+<div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Course Work 2 Documentation</div>  </div>
+<div class="title">EEEE2065-cw2 </div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p><a class="anchor" id="md_README"></a>A number guessing game.</p>
+<h1><a class="anchor" id="autotoc_md1"></a>
+Building</h1>
+<h2><a class="anchor" id="autotoc_md2"></a>
+Requirements</h2>
+<p><code>Cmake</code> Cmake is used to compile the program. You can download cmake <a href="https://cmake.org/download/">here</a>.</p>
+<h2><a class="anchor" id="autotoc_md3"></a>
+Compiling</h2>
+<div class="fragment"><div class="line">git clone https://github.com/ecyht2/EEEE2065-cw2.git</div>
+<div class="line">cd EEEE2065-cw2/</div>
+<div class="line">cmake . &amp;&amp; cmake --build .</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md4"></a>
+Usage</h1>
+<p>After compilation a directory <code>bin/</code> should be created in the repository. To run it, run the command with the word to print. The program will guide you on what to do.</p>
+<div class="fragment"><div class="line">bin/number-guessing-game</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md5"></a>
+Benchmarking for AI</h2>
+<p>This repository also provides a benchmark for the AI. It gets average number times it took the AI to guess a number from 1 to N and calculates the standard deviation. Then, it outputs the data into a csv for further processing.</p>
+<div class="fragment"><div class="line">bin/ai-benchmark</div>
+</div><!-- fragment --><p>The ai-benchmark takes in some arguments. It has the usage signature of:</p>
+<div class="fragment"><div class="line">ai-benchmark min max step iteration</div>
+</div><!-- fragment --><p>However these are optional and defaults to certain values.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Name   </th><th class="markdownTableHeadNone">Description   </th><th class="markdownTableHeadNone">Default    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">min   </td><td class="markdownTableBodyNone">The minimum N to use.   </td><td class="markdownTableBodyNone">100    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">max   </td><td class="markdownTableBodyNone">The maximum N to use.   </td><td class="markdownTableBodyNone">5000    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">step   </td><td class="markdownTableBodyNone">How much should the program increase the N by after each iteration until it reaches max.   </td><td class="markdownTableBodyNone">100    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">iteration   </td><td class="markdownTableBodyNone">How many samples should the benchmark take for a given N.   </td><td class="markdownTableBodyNone">500   </td></tr>
+</table>
+<h1><a class="anchor" id="autotoc_md6"></a>
+Documentation</h1>
+<p>Documentation of the coursework can be found in the project <a href="https://ecyht2.github.io/EEEE2065-cw2/">GitHub pages</a>. </p>
+</div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
