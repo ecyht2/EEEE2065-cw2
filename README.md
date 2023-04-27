@@ -1,6 +1,8 @@
 # EEEE2065-cw2
 A number guessing game.
 
+The Rust implementation of the library can be found [here](https://github.com/ecyht2/guess-my-number-rs.git).
+
 ## Building
 
 ### Requirements
